@@ -81,7 +81,7 @@ function Resume() {
               type="button"
               onClick={() => handleSectionChange(item.id)}
               className={`text-xl md:text-lg transition-colors duration-300 focus:outline-none p-2 ${activeSection === item.id ? "text-orange-400 scale-110"
-                  : "text-white hover:text-orange-400 hover:scale-110"
+                : "text-white hover:text-orange-400 hover:scale-110"
                 }`}
             >
               {item.icon}
@@ -149,7 +149,7 @@ function Resume() {
 function Education() {
   return (
     <>
-      <div className="max-h-[250px] overflow-hidden">
+      <div className="max-h-[250px] overflow-y-auto">
         <h2 className="text-xl mb-4">Education</h2>
         <p className="text-gray-700 text-sm">
           <ul className="mt-4 space-y-6 text-[14px] text-gray-700">
