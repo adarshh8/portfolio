@@ -1,39 +1,56 @@
 import React, { useState } from 'react'
-import { FaInstagram } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa";
-import { BiLogoGmail } from "react-icons/bi";
-import { FaLinkedinIn } from "react-icons/fa6";
-import { IoPaperPlane } from "react-icons/io5";
+import { FaInstagram } from "react-icons/fa"
+import { FaGithub } from "react-icons/fa"
+import { BiLogoGmail } from "react-icons/bi"
+import { FaLinkedinIn } from "react-icons/fa6"
+import { IoPaperPlane } from "react-icons/io5"
+import emailjs from "@emailjs/browser"
 
 function Contact() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     message: ''
-  });
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [successMessage, setSuccessMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
-    });
-  };
+    })
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you can add your form submission logic (e.g., send to backend)
-    console.log('Form submitted:', formData);
+    e.preventDefault()
+    setLoading(true)
+    setSuccessMessage('')
+    setErrorMessage('')
 
-    // Show success message (you can replace this with a toast notification)
-    alert('Thank you for your message! I will get back to you soon.');
-
-    // Reset form
-    setFormData({
-      name: '',
-      email: '',
-      message: ''
-    });
-  };
+    emailjs.send(
+      "adarshdwivedi9598",
+      "template_a6psjme",
+      {
+        name: formData.name,
+        email: formData.email,
+        message: formData.message,
+      },
+      "FrHjyThTWYvW47uQM"
+    ).then(
+      () => {
+        setSuccessMessage("Message sent successfully. I’ll get back to you soon.")
+        setFormData({ name: '', email: '', message: '' })
+        setLoading(false)
+      },
+      () => {
+        setErrorMessage("Something went wrong. Please try again.")
+        setLoading(false)
+      }
+    )
+  }
 
   return (
     <div className='w-full min-h-screen'>
@@ -47,9 +64,8 @@ function Contact() {
 
       <div className='flex justify-center mt-8 mb-12 px-4'>
         <div className='w-full max-w-4xl rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row'>
-          {/* Left Column - Dark Blue Background */}
+
           <div className='w-full md:w-1/2 bg-blue-900 p-8 flex flex-col relative overflow-hidden min-h-[300px]'>
-            {/* Decorative bubbles background */}
             <div className='absolute inset-0 opacity-20'>
               <div className='grid grid-cols-4 gap-3 p-4'>
                 {[...Array(12)].map((_, i) => (
@@ -58,91 +74,73 @@ function Contact() {
               </div>
             </div>
 
-            {/* Content */}
             <div className='relative z-10 h-full flex flex-col'>
-              <div className='flex items-center gap-2 mb-6'>
-                <h1 className='text-3xl md:text-4xl font-bold text-white'>Get In Touch</h1>
+              <h1 className='text-3xl md:text-4xl text-white'>Get In Touch</h1>
+
+              <div className='flex gap-4 my-6'>
+                <a href='https://www.instagram.com/adarshh_010/' target='_blank' rel='noreferrer' className='text-white text-2xl'><FaInstagram /></a>
+                <a href='https://github.com/adarshh8' target='_blank' rel='noreferrer' className='text-white text-2xl'><FaGithub /></a>
+                <a href='mailto:adarshdwivedi9598@gmail.com' className='text-white text-2xl'><BiLogoGmail /></a>
+                <a href='https://www.linkedin.com/in/adarsh8/' target='_blank' rel='noreferrer' className='text-white text-2xl'><FaLinkedinIn /></a>
               </div>
 
-              <div className='flex gap-4 mb-8'>
-                <a href='https://www.instagram.com/adarshh_010/?next=%2F&hl=en' target='_blank' rel='noopener noreferrer' className='text-white text-2xl hover:opacity-80 transition'>
-                  <FaInstagram />
-                </a>
-                <a href='https://github.com/adarshh8' target='_blank' rel='noopener noreferrer' className='text-white text-2xl hover:opacity-80 transition'>
-                  <FaGithub />
-                </a>
-                <a href='mailto:adarshdwivedi9598@gmail.com' className='text-white text-2xl hover:opacity-80 transition'>
-                  <BiLogoGmail />
-                </a>
-                <a href='https://www.linkedin.com/in/adarsh8/' target='_blank' rel='noopener noreferrer' className='text-white text-2xl hover:opacity-80 transition'>
-                  <FaLinkedinIn />
-                </a>
-              </div>
-
-              <p className='text-white text-lg mt-auto'>Send Your Email Here!</p>
+              <p className='text-white mt-auto'>Send Your Email Here!</p>
             </div>
           </div>
 
-          {/* Right Column - Light Gray Background with Form */}
           <div className='w-full md:w-1/2 bg-gray-200 p-8 flex flex-col'>
             <form onSubmit={handleSubmit} className='flex flex-col h-full'>
-              <div className='mb-6'>
-                <label htmlFor='name' className='block text-gray-700 font-medium mb-2'>
-                  Name
-                </label>
-                <input
-                  type='text'
-                  id='name'
-                  name='name'
-                  value={formData.name}
-                  onChange={handleChange}
-                  className='w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                  placeholder='Enter your name'
-                  required
-                />
-              </div>
 
-              <div className='mb-6'>
-                <label htmlFor='email' className='block text-gray-700 font-medium mb-2'>
-                  Email
-                </label>
-                <input
-                  type='email'
-                  id='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleChange}
-                  className='w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
-                  placeholder='Enter your email'
-                  required
-                />
-              </div>
+              <input
+                type='text'
+                name='name'
+                value={formData.name}
+                onChange={handleChange}
+                placeholder='Enter your name'
+                className='mb-4 px-4 py-3 rounded-lg bg-gray-100 border'
+                required
+              />
 
-              <div className='mb-6 flex-grow'>
-                <label htmlFor='message' className='block text-gray-700 font-medium mb-2'>
-                  Message
-                </label>
-                <textarea
-                  id='message'
-                  name='message'
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows='6'
-                  className='w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
-                  placeholder='Enter your message'
-                  required
-                />
-              </div>
+              <input
+                type='email'
+                name='email'
+                value={formData.email}
+                onChange={handleChange}
+                placeholder='Enter your email'
+                className='mb-4 px-4 py-3 rounded-lg bg-gray-100 border'
+                required
+              />
+
+              <textarea
+                name='message'
+                value={formData.message}
+                onChange={handleChange}
+                rows='6'
+                placeholder='Enter your message'
+                className='mb-4 px-4 py-3 rounded-lg bg-gray-100 border resize-none'
+                required
+              />
+
+              {successMessage && (
+                <p className='text-green-600 mb-3'>{successMessage}</p>
+              )}
+
+              {errorMessage && (
+                <p className='text-red-600 mb-3'>{errorMessage}</p>
+              )}
 
               <button
                 type='submit'
-                className='bg-black text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2 border-2 border-red-500 hover:bg-gray-900 transition-colors'
+                disabled={loading}
+                className='bg-black text-white px-6 py-3 rounded-lg flex items-center justify-center gap-2 border-2 border-red-500'
               >
-                <span>send</span>
-                <IoPaperPlane className='text-white' />
+                {loading ? "sending..." : "send"}
+                <IoPaperPlane />
               </button>
+
             </form>
           </div>
+
         </div>
       </div>
     </div>
